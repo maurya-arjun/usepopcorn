@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 
 export default function ListBox({ children }) {
-  const [movieIsOpen, setMovieIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <section className="left">
-      <button onClick={() => setMovieIsOpen((movieIsOpen) => !movieIsOpen)}>
+    <section>
+      <button onClick={() => setIsOpen((isOpen) => !isOpen)}>
         {" "}
-        {movieIsOpen ? "➖" : "➕"}{" "}
+        {isOpen ? "➖" : "➕"}{" "}
       </button>
-      {movieIsOpen && children}
+      {isOpen && children}
     </section>
   );
 }
@@ -17,7 +17,7 @@ export default function ListBox({ children }) {
 export function MoviesList({ movies }) {
   return (
     <ul>
-      {movies.map((tempmovie) => (
+      {movies?.map((tempmovie) => (
         <Movie movie={tempmovie} key={tempmovie.imdbId} />
       ))}
     </ul>

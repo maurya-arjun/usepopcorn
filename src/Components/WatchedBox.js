@@ -1,34 +1,4 @@
-import React, { useState } from "react";
-
-const WatchedBox = ({ watchedMovies }) => {
-  const [movieWatchedIsOpen, setMovieWatchedIsOpen] = useState(true);
-  const [watched, setWatched] = useState(watchedMovies);
-
-  return (
-    <section className="right">
-      <div>
-        <button
-          onClick={() =>
-            setMovieWatchedIsOpen((movieWatchedIsOpen) => !movieWatchedIsOpen)
-          }
-        >
-          {" "}
-          {movieWatchedIsOpen ? "➖" : "➕"}
-        </button>
-
-        {movieWatchedIsOpen && (
-          <>
-            <WatchedSummary watched={watched} />
-            <WatchedMoviesList watched={watched} />
-          </>
-        )}
-      </div>
-      <div></div>
-    </section>
-  );
-};
-
-function WatchedSummary({ watched }) {
+export function WatchedSummary({ watched }) {
   const avgImdbRating = average(watched.map((movies) => movies.imdbrating));
   const avgUserRating = average(watched.map((movies) => movies.userrating));
   const avgRunTime = average(watched.map((movies) => movies.runtime));
@@ -44,10 +14,10 @@ function WatchedSummary({ watched }) {
   );
 }
 
-function WatchedMoviesList({ watched }) {
+export function WatchedMoviesList({ watched }) {
   return (
     <ul>
-      {watched.map((watchedMovie) => (
+      {watched?.map((watchedMovie) => (
         <WatchedMovie watchedMovie={watchedMovie} key={watchedMovie.imdbId} />
       ))}
     </ul>
@@ -73,10 +43,7 @@ function WatchedMovie({ watchedMovie }) {
   );
 }
 
-// Corrected average function
 const average = (arr) => {
   if (arr.length === 0) return 0; // Handle empty array case
   return arr.reduce((acc, curr) => acc + curr, 0) / arr.length;
 };
-
-export default WatchedBox;
