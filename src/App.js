@@ -1,15 +1,29 @@
 import NavBar from "./Components/NavBar";
 import Main from "./Components/Main";
+import { Search, NumResult } from "./Components/NavBar";
+import WatchedBox from "./Components/WatchedBox";
+import ListBox from "./Components/ListBox";
 import { useState } from "react";
+import { MoviesList } from "./Components/ListBox";
 
 function App() {
   const [movies, setMovies] = useState(tempMoviesData);
 
   return (
-    <div className="App">
-      <NavBar movies={movies} />
-      <Main movies={movies} watchedMovies={tempWatchedData} />
-    </div>
+    <>
+      {/* here we are using Components composition to avoid the props drilling */}
+      <NavBar>
+        <Search />
+        <NumResult movies={movies} />
+      </NavBar>
+
+      <Main>
+        <ListBox>
+          <MoviesList movies={movies} />
+        </ListBox>
+        <WatchedBox watchedMovies={tempWatchedData} />
+      </Main>
+    </>
   );
 }
 

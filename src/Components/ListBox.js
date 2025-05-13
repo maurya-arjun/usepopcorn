@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function ListBox({ movies }) {
+export default function ListBox({ children }) {
   const [movieIsOpen, setMovieIsOpen] = useState(true);
 
   return (
@@ -9,12 +9,12 @@ export default function ListBox({ movies }) {
         {" "}
         {movieIsOpen ? "➖" : "➕"}{" "}
       </button>
-      {movieIsOpen && <MoviesList movies={movies} />}
+      {movieIsOpen && children}
     </section>
   );
 }
 
-function MoviesList({ movies }) {
+export function MoviesList({ movies }) {
   return (
     <ul>
       {movies.map((tempmovie) => (

@@ -1,12 +1,9 @@
 import React from "react";
-import WatchedBox from "./WatchedBox";
-import ListBox from "./ListBox";
 
-const Main = ({ movies, watchedMovies }) => {
+const Main = ({ children }) => {
   return (
     <div className="main" style={{ display: "flex" }}>
-      <ListBox movies={movies} />
-      <WatchedBox watchedMovies={watchedMovies} />
+      {children}
     </div>
   );
 };
