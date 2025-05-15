@@ -19,6 +19,7 @@ const TextExpander = ({
     background: "none",
     font: "inherit",
     border: "none",
+    cursor: "pointer",
     color: buttonTextColor,
   };
 
