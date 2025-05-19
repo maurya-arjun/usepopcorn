@@ -2,9 +2,11 @@ import React from "react";
 
 const Main = ({ children }) => {
   return (
-    <div className="main" style={{ display: "flex" }}>
-      {children}
-    </div>
+    <main className="min-h-screen bg-gray-900 pt-20 pb-8 px-4">
+      <div className="container mx-auto flex flex-col lg:flex-row gap-6">
+        {children}
+      </div>
+    </main>
   );
 };
 

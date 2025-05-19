@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-// import App from "./App";
-import StarRating from "./StarRating";
-import TextExpander from "./TextExpander";
+import App from "./App";
+// import StarRating from "./StarRating";
+// import TextExpander from "./TextExpander";
 
 // function Test() {
 //   const [movieRating, setMovieRating] = useState(0);
@@ -23,12 +23,12 @@ import TextExpander from "./TextExpander";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    {/* <App /> */}
-    <StarRating maxRating={5} size={26} color="red" />
+    <App />
+    {/* <StarRating maxRating={5} size={26} color="red" /> */}
     {/* <StarRating maxRating={5} size={25} color="red" defaultRating={2} /> */}
 
     {/* <Test /> */}
-    <TextExpander expanded={true}>
+    {/* <TextExpander expanded={true}>
       It is a long established fact that a reader will be distracted by the
       readable content of a page when looking at its layout. The point of using
       Lorem Ipsum is that it has a more-or-less normal distribution of letters,
@@ -38,8 +38,8 @@ root.render(
       ipsum' will uncover many web sites still in their infancy. Various
       versions have evolved over the years, sometimes by accident, sometimes on
       purpose (injected humour and the like)
-    </TextExpander>
-    <TextExpander
+    </TextExpander> */}
+    {/* <TextExpander
       expandButtonText="Text more"
       buttonTextColor="green"
       collapsedButtonText="Text hide"
@@ -55,6 +55,6 @@ root.render(
       ipsum' will uncover many web sites still in their infancy. Various
       versions have evolved over the years, sometimes by accident, sometimes on
       purpose (injected humour and the like)
-    </TextExpander>
+    </TextExpander> */}
   </React.StrictMode>
 );

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavBar from "./Components/NavBar";
 import Main from "./Components/Main";
 import ListBox from "./Components/ListBox";
@@ -6,12 +6,33 @@ import { Search, NumResult } from "./Components/NavBar";
 import { MoviesList } from "./Components/ListBox";
 import { WatchedSummary, WatchedMoviesList } from "./Components/WatchedBox";
 
+const KEY = "c5b8b4d8";
+const query = "interstellar";
+
 function App() {
-  const [movies, setMovies] = useState(tempMoviesData);
-  const [watched, setWatched] = useState(tempWatchedData);
+  const [movies, setMovies] = useState([]);
+  const [watched, setWatched] = useState([]);
+
+  //   useEffect(function () {
+  //     fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=interstellar`)
+  //       .then((res) => res.json())
+  //       .then((data) => setMovies(data.Search));
+  //   }, []);
+
+  useEffect(function () {
+    async function fetchMovie() {
+      const res = await fetch(
+        `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+      );
+      const data = await res.json();
+      setMovies(data.Search);
+      console.log(data.Search);
+    }
+    fetchMovie();
+  }, []);
 
   return (
-    <>
+    <div className="min-h-screen bg-gray-900">
       {/* here we are using Components composition to avoid the props drilling */}
       <NavBar>
         <Search />
@@ -27,7 +48,7 @@ function App() {
           <WatchedMoviesList watched={watched} />
         </ListBox>
       </Main>
-    </>
+    </div>
   );
 }
 
