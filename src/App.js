@@ -8,10 +8,13 @@ import { WatchedSummary, WatchedMoviesList } from "./Components/WatchedBox";
 
 const KEY = "c5b8b4d8";
 const query = "interstellar";
+// const query = "sdfdsfgsdf";
 
 function App() {
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   //   useEffect(function () {
   //     fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=interstellar`)
@@ -21,12 +24,27 @@ function App() {
 
   useEffect(function () {
     async function fetchMovie() {
-      const res = await fetch(
-        `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
-      );
-      const data = await res.json();
-      setMovies(data.Search);
-      console.log(data.Search);
+      try {
+        setIsLoading(true);
+        const res = await fetch(
+          `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+        );
+
+        if (!res.ok) {
+          throw new Error("Something went wrong with fetching movies");
+        }
+
+        const data = await res.json();
+
+        if (data.Response === "False") {
+          throw new Error(data.Error);
+        }
+        setMovies(data.Search);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
     }
     fetchMovie();
   }, []);
@@ -41,7 +59,10 @@ function App() {
 
       <Main>
         <ListBox>
-          <MoviesList movies={movies} />
+          {/* {isLoading ? <Loader /> : <MoviesList movies={movies} />} */}
+          {isLoading && <Loader />}
+          {!isLoading && !error && <MoviesList movies={movies} />}
+          {error && <ErrorMessage message={error} />}
         </ListBox>
         <ListBox>
           <WatchedSummary watched={watched} />
@@ -49,6 +70,19 @@ function App() {
         </ListBox>
       </Main>
     </div>
+  );
+}
+
+function Loader() {
+  return <p className="text-center text-white">Loading...</p>;
+}
+
+function ErrorMessage({ message }) {
+  return (
+    <p className="text-red-500 text-center">
+      {" "}
+      <span>☹️</span> {message}{" "}
+    </p>
   );
 }
 
