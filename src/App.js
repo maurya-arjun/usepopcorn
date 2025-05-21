@@ -7,14 +7,15 @@ import { MoviesList } from "./Components/ListBox";
 import { WatchedSummary, WatchedMoviesList } from "./Components/WatchedBox";
 
 const KEY = "c5b8b4d8";
-const query = "interstellar";
-// const query = "sdfdsfgsdf";
+// const query = "interstellar";
+const tempQuery = "interstellar";
 
 function App() {
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [query, setQuery] = useState("inception");
 
   //   useEffect(function () {
   //     fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=interstellar`)
@@ -22,38 +23,66 @@ function App() {
   //       .then((data) => setMovies(data.Search));
   //   }, []);
 
+  /*useEffect(function () {
+    console.log("A");
+  });
+
   useEffect(function () {
-    async function fetchMovie() {
-      try {
-        setIsLoading(true);
-        const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
-        );
-
-        if (!res.ok) {
-          throw new Error("Something went wrong with fetching movies");
-        }
-
-        const data = await res.json();
-
-        if (data.Response === "False") {
-          throw new Error(data.Error);
-        }
-        setMovies(data.Search);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchMovie();
+    console.log("C");
   }, []);
+
+  useEffect(
+    function () {
+      console.log("Query state update");
+    },
+    [query]
+  );
+
+  console.log("B");*/
+
+  useEffect(
+    function () {
+      async function fetchMovie() {
+        try {
+          setIsLoading(true);
+          setError("");
+          const res = await fetch(
+            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+          );
+
+          if (!res.ok) {
+            throw new Error("Something went wrong with fetching movies");
+          }
+
+          const data = await res.json();
+
+          if (data.Response === "False") {
+            throw new Error(data.Error);
+          }
+          setMovies(data.Search);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+
+      if (query.length < 3) {
+        setMovies([]);
+        setError("");
+        return;
+      }
+
+      fetchMovie();
+    },
+    [query]
+  );
 
   return (
     <div className="min-h-screen bg-gray-900">
       {/* here we are using Components composition to avoid the props drilling */}
       <NavBar>
-        <Search />
+        <Search query={query} setQuery={setQuery} />
         <NumResult movies={movies} />
       </NavBar>
 
@@ -74,12 +103,12 @@ function App() {
 }
 
 function Loader() {
-  return <p className="text-center text-white">Loading...</p>;
+  return <p className="text-center text-white text-xl">Loading...</p>;
 }
 
 function ErrorMessage({ message }) {
   return (
-    <p className="text-red-500 text-center">
+    <p className="text-red-500 text-center text-xl">
       {" "}
       <span>☹️</span> {message}{" "}
     </p>

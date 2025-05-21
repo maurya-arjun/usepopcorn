@@ -22,9 +22,7 @@ function Logo() {
   );
 }
 
-export function Search() {
-  const [query, setQuery] = useState("");
-
+export function Search({ query, setQuery }) {
   return (
     <div className="w-full sm:w-auto">
       <input
