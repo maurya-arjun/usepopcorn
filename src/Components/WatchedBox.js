@@ -147,6 +147,14 @@ export function MovieDetails({
     [selectedId]
   );
 
+  useEffect(
+    function () {
+      if (!title) return;
+      document.title = `Movie: ${title}`;
+    },
+    [title]
+  );
+
   return (
     <div className="bg-gray-900 min-h-screen text-white p-4 sm:p-6">
       <div className="container mx-auto max-w-4xl">
