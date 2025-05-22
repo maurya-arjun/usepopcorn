@@ -151,6 +151,11 @@ export function MovieDetails({
     function () {
       if (!title) return;
       document.title = `Movie: ${title}`;
+
+      return function () {
+        document.title = "Movies";
+        //console.log(`clean up the previous movie title ${title}`); // here we able to print the movie title just because of clousre concept in JS.
+      };
     },
     [title]
   );
