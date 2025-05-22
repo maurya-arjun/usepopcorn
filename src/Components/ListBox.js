@@ -17,19 +17,26 @@ export default function ListBox({ children }) {
   );
 }
 
-export function MoviesList({ movies }) {
+export function MoviesList({ movies, onSelectMovie }) {
   return (
     <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {movies?.map((tempmovie) => (
-        <Movie movie={tempmovie} key={tempmovie.imdbID} />
+        <Movie
+          movie={tempmovie}
+          key={tempmovie.imdbID}
+          onSelectMovie={onSelectMovie}
+        />
       ))}
     </ul>
   );
 }
 
-function Movie({ movie }) {
+function Movie({ movie, onSelectMovie }) {
   return (
-    <li className="bg-gray-700 rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
+    <li
+      className="bg-gray-700 rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow cursor-pointer"
+      onClick={() => onSelectMovie(movie.imdbID)}
+    >
       <img
         src={movie.Poster}
         alt={movie.Title}
