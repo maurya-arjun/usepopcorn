@@ -115,6 +115,23 @@ export function MovieDetails({
 
   useEffect(
     function () {
+      function callBack(e) {
+        if (e.code === "Escape") {
+          onCloseMovie();
+          console.log("CLOSE");
+        }
+      }
+      document.addEventListener("keydown", callBack);
+
+      return function () {
+        document.removeEventListener("keydown", callBack);
+      };
+    },
+    [onCloseMovie]
+  );
+
+  useEffect(
+    function () {
       async function getMovie() {
         try {
           setIsLoading(true);
@@ -216,7 +233,7 @@ export function MovieDetails({
                     />
                     {userRating > 0 && (
                       <button
-                        className="mt-5 bg-gray-900 py-5 px-10 rounded-xl text-xl"
+                        className="mt-5 bg-blue-900 py-3 px-16 rounded-xl text-xl"
                         onClick={handleAdd}
                       >
                         + Add to list

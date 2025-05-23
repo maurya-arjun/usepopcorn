@@ -19,7 +19,7 @@ function App() {
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [query, setQuery] = useState("inception");
+  const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null);
 
   //   useEffect(function () {
@@ -65,12 +65,14 @@ function App() {
 
   useEffect(
     function () {
+      const controller = new AbortController();
       async function fetchMovie() {
         try {
           setIsLoading(true);
           setError("");
           const res = await fetch(
-            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
+            { signal: controller.signal }
           );
 
           if (!res.ok) {
@@ -83,8 +85,11 @@ function App() {
             throw new Error(data.Error);
           }
           setMovies(data.Search);
+          setError("");
         } catch (err) {
-          setError(err.message);
+          if (err.name !== "AbortError") {
+            setError(err.message);
+          }
         } finally {
           setIsLoading(false);
         }
@@ -96,7 +101,12 @@ function App() {
         return;
       }
 
+      handleCloseMovide();
       fetchMovie();
+
+      return function () {
+        controller.abort();
+      };
     },
     [query]
   );
