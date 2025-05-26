@@ -16,11 +16,15 @@ const KEY = "c5b8b4d8";
 
 function App() {
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null);
+  // const [watched, setWatched] = useState([]);
+  const [watched, setWatched] = useState(function () {
+    const storedMovie = localStorage.getItem("watched");
+    return JSON.parse(storedMovie);
+  });
 
   //   useEffect(function () {
   //     fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=interstellar`)
@@ -62,6 +66,14 @@ function App() {
       watchedMovies.filter((watched) => watched.imdbId !== id)
     );
   }
+
+  // Store watchlist movie into local storage
+  useEffect(
+    function () {
+      localStorage.setItem("watched", JSON.stringify(watched));
+    },
+    [watched]
+  );
 
   useEffect(
     function () {
