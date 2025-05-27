@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import StarRating from "../StarRating";
 import Loader from "./Loader";
 import ErrorMessage from "./ErrorMessage";
+import { useKey } from "../CustomHooks/useKey";
 
 export function WatchedSummary({ watched }) {
   const avgImdbRating = average(watched.map((movies) => movies.imdbRating));
@@ -123,22 +124,24 @@ export function MovieDetails({
     onCloseMovie();
   }
 
-  useEffect(
-    function () {
-      function callBack(e) {
-        if (e.code === "Escape") {
-          onCloseMovie();
-          console.log("CLOSE");
-        }
-      }
-      document.addEventListener("keydown", callBack);
+  useKey("Escape", onCloseMovie);
 
-      return function () {
-        document.removeEventListener("keydown", callBack);
-      };
-    },
-    [onCloseMovie]
-  );
+  // useEffect(
+  //   function () {
+  //     function callBack(e) {
+  //       if (e.code === "Escape") {
+  //         onCloseMovie();
+  //         console.log("CLOSE");
+  //       }
+  //     }
+  //     document.addEventListener("keydown", callBack);
+
+  //     return function () {
+  //       document.removeEventListener("keydown", callBack);
+  //     };
+  //   },
+  //   [onCloseMovie]
+  // );
 
   useEffect(
     function () {
