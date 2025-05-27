@@ -11,15 +11,12 @@ import {
 } from "./Components/WatchedBox";
 import Loader from "./Components/Loader";
 import ErrorMessage from "./Components/ErrorMessage";
-
-const KEY = "c5b8b4d8";
+import { useMovies } from "./useMovies";
 
 function App() {
-  const [movies, setMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null);
+  const { movies, isLoading, error } = useMovies(query); // used custom hook for non-visual logic
   // const [watched, setWatched] = useState([]);
   const [watched, setWatched] = useState(function () {
     const storedMovie = localStorage.getItem("watched");
@@ -73,54 +70,6 @@ function App() {
       localStorage.setItem("watched", JSON.stringify(watched));
     },
     [watched]
-  );
-
-  useEffect(
-    function () {
-      const controller = new AbortController();
-      async function fetchMovie() {
-        try {
-          setIsLoading(true);
-          setError("");
-          const res = await fetch(
-            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
-            { signal: controller.signal }
-          );
-
-          if (!res.ok) {
-            throw new Error("Something went wrong with fetching movies");
-          }
-
-          const data = await res.json();
-
-          if (data.Response === "False") {
-            throw new Error(data.Error);
-          }
-          setMovies(data.Search);
-          setError("");
-        } catch (err) {
-          if (err.name !== "AbortError") {
-            setError(err.message);
-          }
-        } finally {
-          setIsLoading(false);
-        }
-      }
-
-      if (query.length < 3) {
-        setMovies([]);
-        setError("");
-        return;
-      }
-
-      handleCloseMovide();
-      fetchMovie();
-
-      return function () {
-        controller.abort();
-      };
-    },
-    [query]
   );
 
   return (
