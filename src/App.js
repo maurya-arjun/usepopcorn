@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import NavBar from "./Components/NavBar";
 import Main from "./Components/Main";
 import ListBox from "./Components/ListBox";
@@ -12,16 +12,19 @@ import {
 import Loader from "./Components/Loader";
 import ErrorMessage from "./Components/ErrorMessage";
 import { useMovies } from "./useMovies";
+import { useLocalStorageState } from "./CustomHooks/useLocalStorageState";
 
 function App() {
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null);
   const { movies, isLoading, error } = useMovies(query); // used custom hook for non-visual logic
   // const [watched, setWatched] = useState([]);
-  const [watched, setWatched] = useState(function () {
-    const storedMovie = localStorage.getItem("watched");
-    return JSON.parse(storedMovie);
-  });
+  // const [watched, setWatched] = useState(function () {
+  //   const storedMovie = localStorage.getItem("watched");
+  //   return JSON.parse(storedMovie);
+  // });
+
+  const [watched, setWatched] = useLocalStorageState([], "watched");
 
   //   useEffect(function () {
   //     fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=interstellar`)
@@ -65,12 +68,12 @@ function App() {
   }
 
   // Store watchlist movie into local storage
-  useEffect(
-    function () {
-      localStorage.setItem("watched", JSON.stringify(watched));
-    },
-    [watched]
-  );
+  // useEffect(
+  //   function () {
+  //     localStorage.setItem("watched", JSON.stringify(watched));
+  //   },
+  //   [watched]
+  // );
 
   return (
     <div className="min-h-screen bg-gray-900">
